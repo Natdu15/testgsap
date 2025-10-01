@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANGAGE Animation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>*
+  <style>
+    body {
+ background-color:black;  
+}
+.matrix {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: center;
+    font-family: sans-serif;
+    // height: 100vh;
+    overflow: hidden;
+}
+.mcode {
+    font-size: 2rem;
+    color: #49fb35;
+    text-shadow: 0 0 1px #49fb35;
+}
+.mcode:last-child{
+    color: white;
+    text-shadow: 0 0 10px #fff, 0 0 3px #fff, 0 0 3px #49fb35, 0 0 3px #49fb35, 0 0 30px #49fb35, 0 0 30px #49fb35,
+        0 0 70px #49fb35;
+}
+
+.highlight {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    width: 100vw;
+  height: 100vh;
+}
+.btns {
+    position: absolute;
+/*     bottom: 200px; */
+    display: flex;
+    align-items: center;
+}
+#btn {
+    background-color: $color-black;
+    font-family: Sans-serif;
+    cursor: pointer;
+    color: #49fb35;
+    text-transform: uppercase;
+    border: 1px solid #49fb35;
+    padding: 15px;
+    z-index: 1;
+    background: color black;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 3px #fff, 0 0 3px #49fb35, 0 0 3px #49fb35, 0 0 30px #49fb35, 0 0 30px #49fb35,
+            0 0 70px #49fb35;
+        box-shadow: 0 0 1px #49fb35;
+    }
+    to {
+        text-shadow: 0 0 10px #fff, 0 0 3px #fff, 0 0 3px #49fb35, 0 0 3px #49fb35, 0 0 1px #49fb35, 0 0 1px #49fb35,
+            0 0 70px #49fb35;
+        box-shadow: 0 0 10px #49fb35;
+    }
+}
+  </style>
+</head>
+<body>
+   <div class="matrix">
+    </div>
+
+    <div class="highlight">
+        <div class="btns">
+            <div id="btn">Enter The Matrix</div>
+        </div>
+    </div>
+  <script>
+    // for loop to creat the vertical lines 
+for (let i = 0; i < 75; i++) {
+    const proxy = document.createElement("div");
+    proxy.classList.add(`line-${i}`);
+   $(proxy).css({
+        "position": "relative",
+        "display": "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+        "color": "#1b6812",
+        "font-size": "2rem",
+        "mask-image": "linear-gradient(to top, black 50%, transparent 100%)",})
+  
+   const text = document.createTextNode('gdudtd1fkjdf4ldglfjdghsdf');
+    proxy.appendChild(text);
+    $(".matrix").append(proxy);
+  
+//gsap split text to char with class mcode
+  var split = new SplitText(`.line-${i}`, { type: "chars", charsClass: "mcode" })
+    const lines = split.chars;
+  
+   gsap.set(`.line-${i}`, { yPercent: -100 })
+   const tn = gsap.timeline();
+    tn.from(lines, { duration: 0.3, repeat: -1, yoyo: true, scrambleText: { chars: 'gdudtd12kjd34ldgl4340hsdf' }, ease: "power2.out" });
+
+    const tl = gsap.timeline({ repeat: -1 });
+    tl.to(`.line-${i}`, { duration: 5, delay: Math.random() * 10, yPercent: 100 })
+}
+
+$("#btn").on("click", () => {
+    gsap.to('.matrix', { duration: 3, transformOrigin: "center", autoAlpha: 0, scale: 8, ease: "power2.out" })
+    gsap.to('.btns', { duration: 0.3, scaleY: 0, scaleX: 2, ease: "power2.out" })
+})
+
+  </script>
+</body>
+</html>
