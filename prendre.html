@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apprendre à mieux vous connaître</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+  <style>
+    html, body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #0f1622;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; 
+}
+
+/* Portfolio section */
+.portfolio-section {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+}
+
+/* Glass header */
+.header-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background: rgba(15, 22, 34, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #88ce02; 
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+}
+
+.section-title:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: #88ce02; 
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(136, 206, 2, 0.5); 
+}
+
+.coverflow-container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
+  overflow: visible;
+  padding-top: 7rem; 
+}
+
+.coverflow-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: grab;
+}
+
+.coverflow-wrapper:active {
+  cursor: grabbing;
+}
+
+/* Portfolio cards */
+.portfolio-card {
+  position: absolute;
+  width: 80%;
+  max-width: 700px;
+  height: 380px;
+  left: 0;
+  right: 0;
+  margin: 35px auto 0;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  backface-visibility: hidden;
+  transform-origin: center center;
+  transition: box-shadow 0.3s;
+  overflow: auto;
+  text-align: left;
+  will-change: transform, opacity;
+  color: #fff;
+}
+
+/* Gradient backgrounds for cards */
+.gradient-1 {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.gradient-2 {
+  background: linear-gradient(135deg, #f83600 0%, #f9d423 100%);
+}
+
+.gradient-3 {
+  background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+}
+
+.gradient-4 {
+  background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
+}
+
+.gradient-5 {
+  background: linear-gradient(135deg, #0cebeb 0%, #20e3b2 50%, #29ffc6 100%);
+}
+
+.gradient-6 {
+  background: linear-gradient(135deg, #5c258d 0%, #4389a2 100%);
+}
+
+.gradient-7 {
+  background: linear-gradient(135deg, #614385 0%, #516395 100%);
+}
+
+.tech-list .webflow-tag {
+  background: #4353FF; 
+  color: #FFFFFF;
+  border-radius: 20px;
+  padding: 0.7em 1.2em;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-right: 0;
+  margin-bottom: 0;
+  gap: 0.5rem;
+}
+
+.tech-list .webflow-tag:hover {
+  background: #5464FF; 
+  transform: translateY(-3px);
+}
+
+.tech-list .webflow-tag i {
+  color: #FFFFFF;
+  font-size: 1.2rem;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-list li {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  padding: 0.7em 1.2em;
+  font-size: 1.1rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.tech-list li:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+}
+
+.tech-list li i {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+}
+
+.navigation {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 10;
+  pointer-events: none; 
+}
+
+.nav-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.5rem;
+  transition: transform 0.2s, background 0.2s;
+  pointer-events: none; 
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.nav-btn:focus {
+  outline: none;
+}
+
+.progress-indicator {
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s, background 0.3s;
+}
+
+.progress-dot.active {
+  background: #fff;
+  transform: scale(1.4);
+}
+
+.instructions {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  z-index: 100;
+  padding: 1rem;
+  animation: pulse 2s infinite;
+}
+
+.instructions i {
+  margin-right: 6px;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.drag-arrows {
+  position: fixed;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.arrow i {
+  color: white;
+}
+
+.arrow-up {
+  animation: floatUp 2s ease-in-out infinite;
+}
+
+.arrow-down {
+  animation: floatDown 2s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes floatDown {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .portfolio-card {
+    max-width: 600px;
+    height: 360px;
+    padding: 2rem;
+  }
+  
+  .portfolio-card h3 {
+    font-size: 2rem;
+  }
+  
+  .project-description {
+    font-size: 1.05rem;
+  }
+  
+  .tech-list li {
+    padding: 0.6em 1em;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .portfolio-card {
+    width: 85%;
+    max-width: 500px;
+    height: 320px;
+    padding: 1.5rem;
+    margin-top: 15px;
+  }
+  
+  .portfolio-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .project-description {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  .tech-list {
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .tech-list li {
+    padding: 0.5em 0.8em;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-glass {
+    padding: 1rem 0;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+  }
+  
+  .portfolio-card {
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+    min-height: 370px;
+    padding: 1.2rem;
+    overflow-y: auto;
+  }
+  
+  .portfolio-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-description {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  
+  .tech-list {
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  
+  .tech-list li {
+    padding: 0.4em 0.7em;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  
+  .coverflow-container {
+    padding-top: 5rem;
+  }
+}
+
+.portfolio-card h3 {
+  font-size: 2.2rem;
+  margin-top: 0;
+  color: #fff;
+  margin-bottom: 0.8rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.project-description {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+  </style>
+</head>
+  <body>
+<section class="portfolio-section">
+      <div class="header-glass">
+        <h2 class="section-title">GSAP NOW 100% FREE! </h2>
+      </div>
+      
+      <div class="coverflow-container">
+        <div class="coverflow-wrapper">
+          <div class="portfolio-card gradient-1" data-index="0">
+            <h3>Draggable</h3>
+            <p class="project-description">A GSAP plugin that enables intuitive drag and drop functionality with momentum-based animation. Perfect for creating interactive slideshows, carousels, and sortable lists.</p>
+            <ul class="tech-list">
+              <li class="webflow-tag"><i class="fab fa-weebly"></i> Webflow</li>
+              <li><i class="fab fa-js"></i> JavaScript</li>
+              <li><i class="fab fa-html5"></i> HTML5</li>
+              <li>GSAP Core</li>
+              <li>InertiaPlugin</li>
+              <li>ThrowProps</li>
+            </ul>
+          </div>
+          
+          <div class="portfolio-card gradient-2" data-index="1">
+            <h3>ScrollTrigger</h3>
+            <p class="project-description">Unleash scroll-based animations with precise control. Create mind-blowing scroll experiences with effects that start, end, or scrub based on scroll position.</p>
+            <ul class="tech-list">
+              <li class="webflow-tag"><i class="fab fa-weebly"></i> Webflow</li>
+              <li><i class="fab fa-js"></i> JavaScript</li>
+              <li>CSS Animations</li>
+              <li>GSAP Timeline</li>
+              <li>Observer API</li>
+            </ul>
+          </div>
+          
+          <div class="portfolio-card gradient-3" data-index="2">
+            <h3>MorphSVG</h3>
+            <p class="project-description">Transform SVG paths smoothly from one shape to another. Creates fluid, organic shape transitions for logos, icons, and illustrations with precision control.</p>
+            <ul class="tech-list">
+              <li class="webflow-tag"><i class="fab fa-weebly"></i> Webflow</li>
+              <li><i class="fab fa-js"></i> JavaScript</li>
+              <li>SVG</li>
+              <li>Illustrator</li>
+              <li>Figma</li>
+            </ul>
+          </div>
+          
+          <div class="portfolio-card gradient-4" data-index="3">
+            <h3>MotionPath</h3>
+            <p class="project-description">Animate elements along arbitrary paths with complete control over position, rotation, and progress. Perfect for creating complex movement patterns and guided animations.</p>
+            <ul class="tech-list">
+              <li class="webflow-tag"><i class="fab fa-weebly"></i> Webflow</li>
+              <li><i class="fab fa-js"></i> JavaScript</li>
+              <li>SVG</li>
+              <li>GSAP Timeline</li>
+              <li>CSS Variables</li>
+            </ul>
+          </div>
+          
+          <div class="portfolio-card gradient-5" data-index="4">
+            <h3>SplitText</h3>
+            <p class="project-description">Split text into characters, words or lines for advanced text animations. Create kinetic typography with precise control over individual text elements.</p>
+            <ul class="tech-list">
+              <li class="webflow-tag"><i class="fab fa-weebly"></i> Webflow</li>
+              <li><i class="fab fa-js"></i> JavaScript</li>
+              <li>CSS Flexbox</li>
+              <li>CSS Grid</li>
+              <li>Web Typography</li>
+            </ul>
+          </div>
+          
+          <div class="portfolio-card gradient-6" data-index="5">
+            <h3>Flip</h3>
+            <p class="project-description">Create smooth transitions between different states of your layout. Perfect for list reordering, grid transformations, and complex UI state changes with minimal code.</p>
+            <ul class="tech-list">
+              <li class="webflow-tag"><i class="fab fa-weebly"></i> Webflow</li>
+              <li><i class="fab fa-js"></i> JavaScript</li>
+              <li>DOM Manipulation</li>
+              <li>CSS Transforms</li>
+              <li>Layout API</li>
+            </ul>
+          </div>
+          
+          <div class="portfolio-card gradient-7" data-index="6">
+            <h3>Observer</h3>
+            <p class="project-description">A utility that tracks scrolling, pointer/mouse movement, and media queries with unprecedented performance. Create responsive animations that react to user behavior.</p>
+            <ul class="tech-list">
+              <li class="webflow-tag"><i class="fab fa-weebly"></i> Webflow</li>
+              <li><i class="fab fa-js"></i> JavaScript</li>
+              <li>IntersectionObserver</li>
+              <li>ResizeObserver</li>
+              <li>Media Queries</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="indicators">
+          <div class="indicator active" data-index="0"></div>
+          <div class="indicator" data-index="1"></div>
+          <div class="indicator" data-index="2"></div>
+          <div class="indicator" data-index="3"></div>
+          <div class="indicator" data-index="4"></div>
+          <div class="indicator" data-index="5"></div>
+          <div class="indicator" data-index="6"></div>
+        </div>
+      </div>
+      
+      <div class="instructions">
+        <div class="instruction-icon">
+          <i class="fas fa-hand-point-up"></i>
+        </div>
+        <div class="instruction-text">
+          Drag cards up and down to explore projects
+        </div>
+      </div>
+    </section>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+  const cards = document.querySelectorAll('.portfolio-card');
+  const container = document.querySelector('.coverflow-container');
+  const wrapper = document.querySelector('.coverflow-wrapper');
+  const indicators = document.querySelectorAll('.indicator');
+  
+  const totalCards = cards.length;
+  let activeIndex = 0; 
+  const spacing = 100; 
+  const rotationAngle = 55; 
+  const zDepth = 450;
+  
+  function setupCards() {
+    gsap.set(wrapper, {
+      transformPerspective: 1200,
+      transformStyle: "preserve-3d"
+    });
+    
+    cards.forEach((card, index) => {
+      const offset = index - activeIndex;
+      const yPosition = offset * spacing;
+      const zPosition = Math.abs(offset) * -zDepth;
+      const rotateX = offset * rotationAngle;
+      const scale = offset === 0 ? 1 : 0.75;
+      const opacity = offset === 0 ? 1 : Math.max(0.4, 1 - Math.abs(offset) * 0.25);
+      
+      gsap.set(card, {
+        y: yPosition,
+        z: zPosition,
+        rotationX: rotateX,
+        scale: scale,
+        opacity: opacity
+      });
+      
+      if (offset === 0) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+    
+    updateIndicators();
+  }
+  function updateCardPositions() {
+    cards.forEach((card, index) => {
+      const offset = index - activeIndex;
+      const yPosition = offset * spacing;
+      const zPosition = Math.abs(offset) * -zDepth;
+      const rotateX = offset * rotationAngle;
+      const scale = offset === 0 ? 1 : 0.75;
+      const opacity = offset === 0 ? 1 : Math.max(0.4, 1 - Math.abs(offset) * 0.25);
+      
+      gsap.to(card, {
+        y: yPosition,
+        z: zPosition,
+        rotationX: rotateX,
+        scale: scale,
+        opacity: opacity,
+        duration: 0.5,
+        ease: "power2.out",
+        force3D: true
+      });
+      
+      if (offset === 0) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+    
+    updateIndicators();
+  }
+  
+  // Go to a specific card by index
+  function goToCard(index) {
+    // Ensure index is within bounds
+    index = Math.max(0, Math.min(totalCards - 1, index));
+    
+    // Only update if we're changing cards
+    if (index !== activeIndex) {
+      activeIndex = index;
+      updateCardPositions();
+    }
+  }
+  
+  // Update the indicators
+  function updateIndicators() {
+    indicators.forEach((indicator, index) => {
+      if (index === activeIndex) {
+        indicator.classList.add('active');
+      } else {
+        indicator.classList.remove('active');
+      }
+    });
+  }
+  
+  // Set up click handlers for indicators
+  function setupIndicators() {
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        goToCard(index);
+      });
+    });
+  }
+  
+  // Initialize Draggable
+  function initDraggable() {
+    let startY = 0;
+    let startIndex = 0;
+    
+    const draggable = Draggable.create(wrapper, {
+      type: "y",
+      inertia: true,
+      onDragStart: function() {
+        // Record starting Y position and current active index
+        startY = this.y;
+        startIndex = activeIndex;
+      },
+      onDrag: function() {
+        // Calculate the drag distance in "card units"
+        const dragDistance = this.y - startY;
+        const cardsMoved = Math.round(dragDistance / spacing);
+        
+        // Calculate new index based on drag distance
+        let newIndex = startIndex - cardsMoved;
+        
+        // Keep index within bounds
+        newIndex = Math.max(0, Math.min(totalCards - 1, newIndex));
+        
+        // Only update if index changed
+        if (newIndex !== activeIndex) {
+          activeIndex = newIndex;
+          updateCardPositions();
+        }
+      },
+      onDragEnd: function() {
+        // Remember the current index for next drag
+        startIndex = activeIndex;
+        
+        // Reset wrapper position for next drag
+        gsap.to(wrapper, { 
+          y: 0, 
+          duration: 0.3, 
+          ease: "power2.out",
+          overwrite: true
+        });
+      },
+      onThrowComplete: function() {
+        // Same cleanup as dragEnd
+        startIndex = activeIndex;
+        gsap.to(wrapper, { 
+          y: 0, 
+          duration: 0.3, 
+          ease: "power2.out",
+          overwrite: true
+        });
+      }
+    })[0];
+    
+    return draggable;
+  }
+  
+  // Add a reveal animation when the page loads
+  function addInitialAnimation() {
+    gsap.fromTo(cards, 
+      { 
+        y: function(i) { return (i - activeIndex) * spacing + window.innerHeight; },
+        opacity: 0,
+        scale: 0.5,
+        rotationX: 90
+      },
+      {
+        y: function(i) { return (i - activeIndex) * spacing; },
+        z: function(i) { return Math.abs(i - activeIndex) * -zDepth; },
+        rotationX: function(i) { return (i - activeIndex) * rotationAngle; },
+        opacity: function(i) { return i === activeIndex ? 1 : Math.max(0.4, 1 - Math.abs(i - activeIndex) * 0.25); },
+        scale: function(i) { return i === activeIndex ? 1 : 0.75; },
+        duration: 1.5,
+        stagger: 0.1,
+        ease: "power3.out",
+        onComplete: function() {
+          // Highlight the instructions after the animation completes
+          gsap.to('.instructions', {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out"
+          });
+        }
+      }
+    );
+  }
+  
+  // Initialize
+  function init() {
+    // Hide the instructions initially
+    gsap.set('.instructions', { opacity: 0, y: 20 });
+    
+    // Setup cards
+    setupCards();
+    
+    // Setup indicators
+    setupIndicators();
+    
+    // Initialize draggable functionality
+    const draggable = initDraggable();
+    
+    // Add the reveal animation
+    addInitialAnimation();
+    
+    // Enable keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        goToCard(activeIndex - 1);
+      } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        goToCard(activeIndex + 1);
+      }
+    });
+  }
+  
+  // Start
+  init();
+});
+    </script>
+  </body>
+</html>
