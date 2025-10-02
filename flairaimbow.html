@@ -210,16 +210,13 @@ body {
   <source src="https://assets.codepen.io/605067/gsap-whoosh.mp3" type="audio/mpeg">
 </audio>
   <script>
-    // original from ToyFight: https://codepen.io/bradarnett/pen/mdjKoyo/c86553b0c49bf0437327b964953fab17 shared on Twitter/X at https://twitter.com/Toy_Fight/status/1713895526318350645
 
-// Core selectors
 const elSelector = gsap.utils.selector(".logo"),
 			whoosh = document.querySelector(".whoosh")
 
-// State
+
 let muted = true
 
-// GSAP selectors
 const el = {
 	inner: elSelector(".logo-inner"),
 	g: elSelector(".logo-g"),
@@ -229,7 +226,7 @@ const el = {
 	path: elSelector(".logo-path path")
 }
 
-// Timeline vars
+
 const logoGap = 100,
 			airtime = CustomEase.create("custom", "M0,0 C0.05,0.356 0.377,0.435 0.5,0.5 0.61,0.558 0.948,0.652 1,1 "),
 			rotaaaaate = CustomEase.create("custom", "M0,0 C0.148,0.346 0.254,0.444 0.5,0.5 0.751,0.557 0.852,0.646 1,1 "),
@@ -243,12 +240,12 @@ const shuffle = (arr, limit) => {
 		.slice(0, limit || arr.length)
 }
 
-// Timeline
+
 const createTimeline = () => {
 	var randomScale = gsap.utils.random(0.7, 1, 0.01, true);
 	var randomRotation = gsap.utils.random(-90, -360, 1, true);
 	
-	// Logo <- ->
+
 	const logoStretch = () => {
 		var tl = gsap.timeline({ defaults: {ease: "power4.inOut", duration: 1}});
 		tl.to(el.inner, {
@@ -266,19 +263,18 @@ const createTimeline = () => {
 		return tl;
 	}
 
-	// Shapes --->
+
 	const shapesFlying = () => {
 		var tl = gsap.timeline()
 		const shuffledShaped = shuffle(el.shapes, 8)
-	
-		// Shape visible
+
 		tl.to(shuffledShaped, {
 			opacity: 1,
 			duration: 0,
 			stagger: stagger
 		})
 
-		// Shape scale
+
 		tl.fromTo(shuffledShaped, {
 			scale: .4,
 			rotation: 0
@@ -290,7 +286,6 @@ const createTimeline = () => {
 			stagger: stagger
 		}, 0.15)
 		
-		// Shape flight
 		tl.to(shuffledShaped, {
 			motionPath: {
 				path: el.path[0],
@@ -303,7 +298,6 @@ const createTimeline = () => {
 			stagger: stagger
 		}, "<")
 		
-		// Shape hidden
 		tl.to(shuffledShaped, {
 			opacity: 0,
 			duration: 0,
@@ -312,7 +306,6 @@ const createTimeline = () => {
 		return tl;
 	}
 
-	// Logo -> <-
 	const logoShrink = () => {
 		var tl = gsap.timeline({defaults: {ease: "power4.inOut", duration: 1}});
 		tl.to(el.g, {
@@ -331,7 +324,6 @@ const createTimeline = () => {
 		return tl;
 	}
 	
-	// Logo <--
 	const logoReset = () => {
 		gsap.set([el.inner], {
 			x: `${-window.innerWidth / 1.5}px`,
@@ -341,7 +333,6 @@ const createTimeline = () => {
 		})
 	}
 
-	// Parent timeline handling audio and repeat
 	const logoLoop = gsap.timeline({
 		onRepeat: () => {
 			if (!muted) whoosh.play(0)
