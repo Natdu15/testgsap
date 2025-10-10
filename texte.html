@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="images/logo-sd.png" href="images/logo-sd.png">
+    <title>BUT Science des Données</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @font-face {
+  font-display: block;
+  font-family: Mori;
+  font-style: normal;
+  font-weight: 900;
+  src: url(https://assets.codepen.io/16327/PPMori-SemiBold.woff) format("woff");
+}
+
+html, body {
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100vh;
+}
+  
+body {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family: "Mori";
+/*   background: #0e100f; */
+  background: radial-gradient(129% 99% at 112% 85%, rgb(223, 220, 255) 20%, rgb(166, 158, 255) 90%),    
+    url('https://assets.codepen.io/16327/noise-e82662fe.png');  
+  background-blend-mode: color-dodge;
+}
+
+.headline {
+  text-align:center;
+  color: rgb(14, 16, 15);
+  font-size: clamp(2rem, 6rem, 4.5vw);
+  letter-spacing: 0.05rem;
+  will-change: transform;
+}
+
+.headline * {
+  will-change: transform;
+}
+  </style>
+</head>
+<body>
+<div class="headline">BUT SD Aurillac</div>
+  <script>
+    document.fonts.ready.then(() => {
+  const st = SplitText.create(".headline");
+
+  const tl = gsap
+    .timeline()
+    .from(st.chars, {
+      duration: 1.2,
+      opacity: 0,
+      ease: "power1.inOut",
+      stagger: { from: "center", each: 0.04 }
+    })
+    .from(
+      st.words,
+      {
+        duration: 3,
+        y: (i) => i * 100 - 50,
+        ease: "expo"
+      },
+      0
+    );
+
+  window.onclick = () => tl.play(0); // click to replay
+});
+
+// 💚 This just adds the GSAP link to this pen, don't copy this bit
+import { GSAPInfoBar } from "https://codepen.io/GreenSock/pen/vYqpyLg.js";
+new GSAPInfoBar({ link: "https://gsap.com/docs/v3/Plugins/SplitText/" });
+// 💚 Happy tweening!
+
+  </script>
+</body>
+</html>
